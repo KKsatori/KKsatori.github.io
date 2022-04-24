@@ -511,18 +511,18 @@ public:
 &#125;;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="ch03"><a href="#ch03" class="headerlink" title="ch03"></a>ch03</h2><h3 id="旋转矩阵"><a href="#旋转矩阵" class="headerlink" title="旋转矩阵"></a>旋转矩阵</h3><p>绕X轴  绕Y轴  绕Z轴 </p>
-<p><img src="./slam-gao/01.png" style="zoom:67%;" /><img src="/home/satori/blog/source/_posts/slam-gao/02.png" style="zoom:67%;" /><img src="/home/satori/blog/source/_posts/slam-gao/03.png" style="zoom:67%;" /></p>
+<p><img src="/images/slam-gao/01.png" style="zoom:100%;" /><img src="/images/slam-gao/02.png" style="zoom:100%;" /><img src="/images/slam-gao/03.png" style="zoom:100%;" /></p>
 <pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">Matrix3d R &#x3D; AngleAxisd(M_PI &#x2F; 3,Vector3d(0,0,1)).toRotationMatrix();   &#x2F;&#x2F;沿z轴转90°的旋转矩阵<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h2 id="ch04"><a href="#ch04" class="headerlink" title="ch04"></a>ch04</h2><p><img src="./slam-gao/04.png"></p>
-<p><img src="./slam-gao/05.png"></p>
-<h2 id="ch07"><a href="#ch07" class="headerlink" title="ch07"></a>ch07</h2><h3 id="2D-2D-P168"><a href="#2D-2D-P168" class="headerlink" title="2D-2D P168"></a>2D-2D P168</h3><p><img src="./slam-gao/06.png"></p>
+<h2 id="ch04"><a href="#ch04" class="headerlink" title="ch04"></a>ch04</h2><p><img src="/images/slam-gao/04.png"></p>
+<p><img src="/images/slam-gao/05.png"></p>
+<h2 id="ch07"><a href="#ch07" class="headerlink" title="ch07"></a>ch07</h2><h3 id="2D-2D-P168"><a href="#2D-2D-P168" class="headerlink" title="2D-2D P168"></a>2D-2D P168</h3><p><img src="/images/slam-gao/06.png"></p>
 <ul>
-<li><p>在相差一个尺度因子的情况下，<img src="./slam-gao/07.png" alt="50" style="zoom:60%;" />     <em>(E=t^R)</em>  即<br>$$<br>t=UZU^T<br>$$</p>
+<li><p>在相差一个尺度因子的情况下，$E = UZU^TR$    <em>(E=t^R)</em>  即 $t=UZU^T$</p>
 </li>
 <li><p>绕Z轴旋转90°向量：[ 0 , 0 , 1 ]</p>
 </li>
-<li><p>存在两个 t,R : 求解奇异值时先求解<img src="./slam-gao/08.png">的特征值，奇异值的平方为特征值，存在正负</p>
+<li><p>存在两个 t,R : 求解奇异值时先求解 $EE^T$ 的特征值，奇异值的平方为特征值，存在正负</p>
 </li>
 </ul>
 
