@@ -4,8 +4,10 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Hello World, Satori">
-    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hex">
+    <meta name="keywords" content="视觉SLAM十四讲笔记, Satori">
+    <meta name="description" content="SLAM类1.cv::KeyPointclass KeyPoint  
+&amp;#123;            Point2f  pt;  &amp;#x2F;&amp;#x2F;坐标  
+             float  size; &amp;#x2F;&amp;#x">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -17,7 +19,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Hello World | Satori</title>
+    <title>视觉SLAM十四讲笔记 | Satori</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -309,12 +311,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/7.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Hello World</h1>
+                    <h1 class="description center-align post-title">视觉SLAM十四讲笔记</h1>
                 </div>
             </div>
         </div>
@@ -428,12 +430,25 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/SLAM/">
+                                <span class="chip bg-color">SLAM</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E5%AF%BC%E8%88%AA/" class="post-category">
+                                导航
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -442,7 +457,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-12-03
+                    2021-12-26
                 </div>
                 
 
@@ -466,19 +481,50 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo new <span class="token string">"My New Post"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+                <h1 id="SLAM"><a href="#SLAM" class="headerlink" title="SLAM"></a>SLAM</h1><h2 id="类"><a href="#类" class="headerlink" title="类"></a>类</h2><h5 id="1-cv-KeyPoint"><a href="#1-cv-KeyPoint" class="headerlink" title="1.cv::KeyPoint"></a>1.cv::KeyPoint</h5><pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">class KeyPoint  
+&#123;            Point2f  pt;  &#x2F;&#x2F;坐标  
+             float  size; &#x2F;&#x2F;特征点邻域直径  
+             float  angle; &#x2F;&#x2F;特征点的方向，值为[零,三百六十)，负值表示不使用  
+             float  response;  
+             int  octave; &#x2F;&#x2F;特征点所在的图像金字塔的组  
+             int  class_id; &#x2F;&#x2F;用于聚类的id  
+&#125;; <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo server<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h5 id="2-DMatch"><a href="#2-DMatch" class="headerlink" title="2.DMatch"></a>2.DMatch</h5><pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">&#x2F;*用于匹配关键点描述符的类*&#x2F;
+class CV_EXPORTS_W_SIMPLE DMatch
+&#123;
+public:
+    &#x2F;&#x2F;三个构造函数
+    CV_WRAP DMatch();
+    CV_WRAP DMatch(int _queryIdx, int _trainIdx, float _distance);
+    CV_WRAP DMatch(int _queryIdx, int _trainIdx, int _imgIdx, float _distance);
+ 
+    CV_PROP_RW int queryIdx; &#x2F;&#x2F; query descriptor index - 此匹配对应的查询图像的特征描述子索引 
+    CV_PROP_RW int trainIdx; &#x2F;&#x2F; train descriptor index - 此匹配对应的训练(模板)图像的特征描述子索引 
+    CV_PROP_RW int imgIdx;   &#x2F;&#x2F; train image index - 训练图像索引(若有多个) 
+	&#x2F;&#x2F;例如已知一幅图像的sift描述子，与其他十幅图像的描述子进行匹配，找最相似的图像，则imgIdx此时就有用了。
+ 
+    CV_PROP_RW float distance; &#x2F;&#x2F; &#x2F;&#x2F;两个特征向量之间的欧氏距离，越小表明匹配度越高。
+	&#x2F;&#x2F;DMatch比较运算符重载，比较的是DMatch中的distance，小于为true，否则为false
+    &#x2F;&#x2F; less is better
+    bool operator&lt;(const DMatch &amp;m) const;
+&#125;;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo generate<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="ch03"><a href="#ch03" class="headerlink" title="ch03"></a>ch03</h2><h3 id="旋转矩阵"><a href="#旋转矩阵" class="headerlink" title="旋转矩阵"></a>旋转矩阵</h3><p>绕X轴  绕Y轴  绕Z轴 </p>
+<p><img src="./slam-gao/01.png" style="zoom:67%;" /><img src="/home/satori/blog/source/_posts/slam-gao/02.png" style="zoom:67%;" /><img src="/home/satori/blog/source/_posts/slam-gao/03.png" style="zoom:67%;" /></p>
+<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">Matrix3d R &#x3D; AngleAxisd(M_PI &#x2F; 3,Vector3d(0,0,1)).toRotationMatrix();   &#x2F;&#x2F;沿z轴转90°的旋转矩阵<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo deploy<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<h2 id="ch04"><a href="#ch04" class="headerlink" title="ch04"></a>ch04</h2><p><img src="./slam-gao/04.png"></p>
+<p><img src="./slam-gao/05.png"></p>
+<h2 id="ch07"><a href="#ch07" class="headerlink" title="ch07"></a>ch07</h2><h3 id="2D-2D-P168"><a href="#2D-2D-P168" class="headerlink" title="2D-2D P168"></a>2D-2D P168</h3><p><img src="./slam-gao/06.png"></p>
+<ul>
+<li><p>在相差一个尺度因子的情况下，<img src="./slam-gao/07.png" alt="50" style="zoom:60%;" />     <em>(E=t^R)</em>  即<br>$$<br>t=UZU^T<br>$$</p>
+</li>
+<li><p>绕Z轴旋转90°向量：[ 0 , 0 , 1 ]</p>
+</li>
+<li><p>存在两个 t,R : 求解奇异值时先求解<img src="./slam-gao/08.png">的特征值，奇异值的平方为特征值，存在正负</p>
+</li>
+</ul>
 
                 
             </div>
@@ -505,7 +551,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/2021/12/03/hello-world/">http://example.com/2021/12/03/hello-world/</a>
+                    <a href="http://example.com/2021/12/26/slam-gao/">http://example.com/2021/12/26/slam-gao/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -542,7 +588,11 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
+                            
+                                <a href="/tags/SLAM/">
+                                    <span class="chip bg-color">SLAM</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -712,17 +762,18 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2021/12/03/test/">
+                <a href="/2021/12/26/slam-gao/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="">
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="视觉SLAM十四讲笔记">
                         
-                        <span class="card-title"></span>
+                        <span class="card-title">视觉SLAM十四讲笔记</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -732,16 +783,29 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-12-03
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-12-26
+                            </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            Satori
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%AF%BC%E8%88%AA/" class="post-category">
+                                    导航
+                                </a>
+                            
                             
                         </span>
                     </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/SLAM/">
+                        <span class="chip bg-color">SLAM</span>
+                    </a>
+                    
                 </div>
                 
             </div>
@@ -750,16 +814,16 @@
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                本篇&nbsp;<i class="far fa-dot-circle"></i>
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/12/03/hello-world/">
+                <a href="/2021/12/03/test2/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="Hello World">
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="test2">
                         
-                        <span class="card-title">Hello World</span>
+                        <span class="card-title">test2</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -780,7 +844,6 @@
                         </span>
                     </div>
                 </div>
-
                 
             </div>
         </div>
