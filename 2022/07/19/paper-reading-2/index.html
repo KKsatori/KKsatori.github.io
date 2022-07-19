@@ -4,9 +4,10 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="论文阅读-Past, Present, and Future of Simultaneous Localization and Mapping:Toward the Robust-Perception Age, ksatori">
-    <meta name="description" content="论文阅读-Past, Present, and Future of Simultaneous Localization and Mapping: Toward the Robust-Perception Age为什么需要SLAM
-SLAM要">
+    <meta name="keywords" content="论文阅读-A review on absolute visual localization for UAV, ksatori">
+    <meta name="description" content="论文阅读-A review on absolute visual localization for UAV前情：GNSS-INS方案存在问题
+GNSS通过无线信号测量，信号可被环境遮挡、反射、干扰，导致较大误差。
+存在安全漏洞，攻击者可通过">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -18,7 +19,7 @@ SLAM要">
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>论文阅读-Past, Present, and Future of Simultaneous Localization and Mapping:Toward the Robust-Perception Age | ksatori</title>
+    <title>论文阅读-A review on absolute visual localization for UAV | ksatori</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -266,12 +267,12 @@ SLAM要">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">论文阅读-Past, Present, and Future of Simultaneous Localization and Mapping:Toward the Robust-Perception Age</h1>
+                    <h1 class="description center-align post-title">论文阅读-A review on absolute visual localization for UAV</h1>
                 </div>
             </div>
         </div>
@@ -412,7 +413,7 @@ SLAM要">
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-05-02
+                    2022-07-19
                 </div>
                 
 
@@ -436,34 +437,32 @@ SLAM要">
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="论文阅读-Past-Present-and-Future-of-Simultaneous-Localization-and-Mapping-Toward-the-Robust-Perception-Age"><a href="#论文阅读-Past-Present-and-Future-of-Simultaneous-Localization-and-Mapping-Toward-the-Robust-Perception-Age" class="headerlink" title="论文阅读-Past, Present, and Future of Simultaneous Localization and Mapping: Toward the Robust-Perception Age"></a>论文阅读-Past, Present, and Future of Simultaneous Localization and Mapping: Toward the Robust-Perception Age</h1><h5 id="为什么需要SLAM"><a href="#为什么需要SLAM" class="headerlink" title="为什么需要SLAM"></a>为什么需要SLAM</h5><ol>
-<li>SLAM要求研究在更具挑战性的环境下，如无GPS、低质量传感器</li>
-<li>有回环闭合，容错率高</li>
-<li>全局一致的地图必须要SLAM</li>
+                <h1 id="论文阅读-A-review-on-absolute-visual-localization-for-UAV"><a href="#论文阅读-A-review-on-absolute-visual-localization-for-UAV" class="headerlink" title="论文阅读-A review on absolute visual localization for UAV"></a>论文阅读-A review on absolute visual localization for UAV</h1><h3 id="前情：GNSS-INS方案存在问题"><a href="#前情：GNSS-INS方案存在问题" class="headerlink" title="前情：GNSS-INS方案存在问题"></a>前情：GNSS-INS方案存在问题</h3><ol>
+<li>GNSS通过无线信号测量，信号可被环境遮挡、反射、干扰，导致较大误差。</li>
+<li>存在安全漏洞，攻击者可通过信号篡夺得到无人机控制权。</li>
 </ol>
-<h5 id="怎么看SLAM是否能满足该需求"><a href="#怎么看SLAM是否能满足该需求" class="headerlink" title="怎么看SLAM是否能满足该需求"></a>怎么看SLAM是否能满足该需求</h5><ol>
-<li>机器人：运动类型（比如，运动状况，最大速度），可用的传感器（如，分辨率，采样率），可用的计算资源</li>
-<li>环境：平面或三维，自然路标或人工路标，动态元素的数量，对称的数量和感知混淆的风险。这些方面都依赖于传感器与环境的匹配</li>
-<li>性能要求：机器人状态估计中的期望精度，环境表示的精度和类型(比如，基于路标的或稠密云点)，成功的概率(满足精度边界的测试结果的百分比)，估计延时，最大运行时间，最大地图面积</li>
+<p>故提出基于视觉和视觉辅助的替代或补充方案。</p>
+<h3 id="RVL-Relative-visual-localization"><a href="#RVL-Relative-visual-localization" class="headerlink" title="RVL(Relative visual localization)"></a>RVL(Relative visual localization)</h3><p>即帧到帧定位，包括视觉里程计(VO)、SLAM。</p>
+<ul>
+<li>VO、VIO：光流分析，匹配当前帧与先前帧差异估计位姿。</li>
+<li>SLAM：较VO，增加闭环检测和BA，若无闭环情况效果等同于VO。</li>
+</ul>
+<p>核心问题：误差积累即随时间漂移，虽能融合INS惯性数据，但仍没解决误差积累。</p>
+<h3 id="AVL-Absolute-visual-localization"><a href="#AVL-Absolute-visual-localization" class="headerlink" title="AVL(Absolute visual localization)"></a>AVL(Absolute visual localization)</h3><p>即根据无人机当前的观测，在地图中进行匹配，从而在地图中对自身位置进行定位。地图可是卫星地图或自行采集的地图。</p>
+<p>优点：不受时间漂移的影响。</p>
+<p>难点：</p>
+<ol>
+<li>地图集由不同传感器在不同时间、照明水平、分辨率拍摄带来的匹配挑战。</li>
+<li>减少在全局地图匹配时的搜索空间。</li>
 </ol>
-<p>​     当机器人的运动或环境太过挑战时(机器人快速的运动，高动态环境)，SLAM算法很容易失效；通常无法满足严苛的性能要求(对快速回环闭合的快速估计)</p>
-<h5 id="SLAM第三个时代：robust-perception-age-需求"><a href="#SLAM第三个时代：robust-perception-age-需求" class="headerlink" title="SLAM第三个时代：robust-perception age 需求"></a>SLAM第三个时代：robust-perception age 需求</h5><ol>
-<li>鲁棒性能：在广泛环境以低错误率长时间运行；有失效保护机制(fail-safe mechanisms)且有自我调节功能(self-tuning capabilities)以根据实际情况自动选择系统参数</li>
-<li>高层次的理解力：除了基本的几何重建还能够在更高层次上理解环境信息(high-level geometry, semantics, physics, affordances)</li>
-<li>资源敏感：进行裁剪以满足现有传感器和计算资源，也可以根据现有资源调整计算负载</li>
-<li>任务驱动感知：选择相关感知信息过滤不相关以支持机器人任务执行；能自适应地表示地图，复杂性随任务而改变</li>
-</ol>
-<h3 id="SLAM的标准格式和架构"><a href="#SLAM的标准格式和架构" class="headerlink" title="SLAM的标准格式和架构"></a>SLAM的标准格式和架构</h3><p>2</p>
-<p>SLAM系统分为前端和后端。前端提取传感器数据构建模型用于状态估计，后端根据前端提供的数据进行推断</p>
-<p><img src="../images/paper-reading-1/2.png"></p>
-<h5 id="依赖传感器的SLAM前端"><a href="#依赖传感器的SLAM前端" class="headerlink" title="依赖传感器的SLAM前端"></a>依赖传感器的SLAM前端</h5><p>基于传感器数据提取特征。可将像素信息与特定地标关联(即特征追踪、回环检测)，为非线性优化中的变量提供初始估计</p>
-<h5 id="最大后验估计-MAP-和SLAM后端"><a href="#最大后验估计-MAP-和SLAM后端" class="headerlink" title="最大后验估计(MAP)和SLAM后端"></a>最大后验估计(MAP)和SLAM后端</h5><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u011508640/article/details/72815981">相关概率介绍</a></p>
-<p>jump</p>
-<h3 id="SLAM的鲁棒性"><a href="#SLAM的鲁棒性" class="headerlink" title="SLAM的鲁棒性"></a>SLAM的鲁棒性</h3><p>失败原因：现有SLAM算法的局限性、硬件相关(传感器或执行器退化)</p>
-<h3 id="deals-with-scalability"><a href="#deals-with-scalability" class="headerlink" title="deals with scalability"></a>deals with scalability</h3><p>4</p>
-<h3 id="环境表示"><a href="#环境表示" class="headerlink" title="环境表示"></a>环境表示</h3><p>5,6</p>
-<h3 id="SLAM理论方面取得的进展"><a href="#SLAM理论方面取得的进展" class="headerlink" title="SLAM理论方面取得的进展"></a>SLAM理论方面取得的进展</h3><p>7, 8如何做决策以提高SLAM系统结果的质量</p>
-<h3 id="展望了SLAM的最新趋势，包括一些非传统的传感器的使用和一些新方法"><a href="#展望了SLAM的最新趋势，包括一些非传统的传感器的使用和一些新方法" class="headerlink" title="展望了SLAM的最新趋势，包括一些非传统的传感器的使用和一些新方法"></a>展望了SLAM的最新趋势，包括一些非传统的传感器的使用和一些新方法</h3><p>9</p>
+<h4 id="图像匹配："><a href="#图像匹配：" class="headerlink" title="图像匹配："></a>图像匹配：</h4><h5 id="1-Template-matching"><a href="#1-Template-matching" class="headerlink" title="1. Template matching"></a>1. Template matching</h5><p>直接匹配或密集匹配，将无人机当前视图作模板在地图中进行匹配。</p>
+<p>缺点：相似性判断的计算成本高。</p>
+<ul>
+<li><p>normalized cross-correlation (NCC)：</p>
+<p>作为概率密度函数在粒子滤波中，执行无人机视图和全局参考地图的密集图像对齐。作者假设高度已知</p>
+</li>
+</ul>
+<p>未完待续~</p>
 
                 
             </div>
@@ -490,7 +489,7 @@ SLAM要">
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://kksatori.github.io/2022/05/02/paper-reading-1/">http://kksatori.github.io/2022/05/02/paper-reading-1/</a>
+                    <a href="http://kksatori.github.io/2022/07/19/paper-reading-2/">http://kksatori.github.io/2022/07/19/paper-reading-2/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -701,9 +700,10 @@ SLAM要">
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2022/07/19/paper-reading-2/">
                     <div class="card-image">
@@ -721,9 +721,9 @@ SLAM要">
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-07-19
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-07-19
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -736,6 +736,7 @@ SLAM要">
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -754,13 +755,13 @@ SLAM要">
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/04/29/bi-gram/">
+                <a href="/2022/05/02/paper-reading-1/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="用bi-gram实现简单汉语分词程序">
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="论文阅读-Past, Present, and Future of Simultaneous Localization and Mapping:Toward the Robust-Perception Age">
                         
-                        <span class="card-title">用bi-gram实现简单汉语分词程序</span>
+                        <span class="card-title">论文阅读-Past, Present, and Future of Simultaneous Localization and Mapping:Toward the Robust-Perception Age</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -771,14 +772,14 @@ SLAM要">
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-04-29
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-05-02
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/NLP/" class="post-category">
-                                    NLP
+                            <a href="/categories/SLAM/" class="post-category">
+                                    SLAM
                                 </a>
                             
                             
@@ -788,8 +789,8 @@ SLAM要">
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E5%88%86%E8%AF%8D/">
-                        <span class="chip bg-color">分词</span>
+                    <a href="/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">
+                        <span class="chip bg-color">论文阅读</span>
                     </a>
                     
                 </div>
