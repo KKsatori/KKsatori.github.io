@@ -392,6 +392,10 @@ GNSS通过无线信号测量，信号可被环境遮挡、反射、干扰，导�
                                 <span class="chip bg-color">论文阅读</span>
                             </a>
                         
+                            <a href="/tags/%E8%A7%86%E8%A7%89%E5%AE%9A%E4%BD%8D/">
+                                <span class="chip bg-color">视觉定位</span>
+                            </a>
+                        
                     </div>
                     
                 </div>
@@ -400,8 +404,8 @@ GNSS通过无线信号测量，信号可被环境遮挡、反射、干扰，导�
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/SLAM/" class="post-category">
-                                SLAM
+                            <a href="/categories/%E5%AE%9A%E4%BD%8D/" class="post-category">
+                                定位
                             </a>
                         
                     </div>
@@ -458,11 +462,40 @@ GNSS通过无线信号测量，信号可被环境遮挡、反射、干扰，导�
 <h4 id="图像匹配："><a href="#图像匹配：" class="headerlink" title="图像匹配："></a>图像匹配：</h4><h5 id="1-Template-matching"><a href="#1-Template-matching" class="headerlink" title="1. Template matching"></a>1. Template matching</h5><p>直接匹配或密集匹配，将无人机当前视图作模板在地图中进行匹配。</p>
 <p>缺点：相似性判断的计算成本高。</p>
 <ul>
-<li><p>normalized cross-correlation (NCC)：</p>
-<p>作为概率密度函数在粒子滤波中，执行无人机视图和全局参考地图的密集图像对齐。作者假设高度已知</p>
+<li><p><strong>Van Dalen G.J., Magree D.P., Johnson E.N.《Absolute localization using image alignment and particle filtering》：</strong></p>
+<p>normalized cross-correlation(NCC)，作为概率密度函数在粒子滤波中，执行无人机视图和全局参考地图的密集图像对齐。</p>
+<p>用高度信息在模板匹配前对视图缩放。</p>
+</li>
+<li><p><strong>Yol A., Delabarre B., Dame A., Dartois J.-E., Marchand E.《Vision-based absolute localization for unmanned aerial vehicles》</strong></p>
+<p>mutual information (MI)作为相似性度量使用，测两个图像的共享信息量。</p>
+</li>
+<li><p><strong>Wan X., Liu J., Yan H., Morgan G.L.K.《Illumination-invariant image matching for autonomous UAV localisation based on optical sensing》</strong></p>
+<p>基于光度不变的相位相关（illumination invariant Phase Correlation）的定位方案。</p>
+<p>Phase Correlation (PC)，一种基于傅里叶变换特性的模板匹配或图像对齐方法。算法利用两幅相似图像间的变化会在频域产生线性相位差，对太阳位置引起的光照变化不敏感。基于此，作者提出了一个基于卫星图像模板匹配的AVL方案。</p>
+</li>
+<li><p><strong>Patel B.《Visual Localization for UAVs in Outdoor GPS-denied Environments》</strong></p>
+<p>从MI获得normalized information distanc(NID)，但不依赖图像间的重叠量，因此定位更具鲁棒性。该方法结果与网格搜索的结果相似，但计算量要少。</p>
+<p>限制是假设UAV frame和参考图像间的旋转变化为0.</p>
 </li>
 </ul>
-<p>未完待续~</p>
+<h5 id="2-Feature-points-matching"><a href="#2-Feature-points-matching" class="headerlink" title="2.Feature points matching"></a>2.Feature points matching</h5><p>模板匹配的有效替代方案，涉及特征点检测（角点、显著点检测）和描述子提取(gradient histograms from SIFT and the binary tests from BRIEF)。</p>
+<p>本节中大多使用特征点匹配和统计滤波的组合实现定位。</p>
+<ul>
+<li><p><strong>Seema B.S., Hemanth K., Naidu V.P.S.《Geo-registration of aerial images using RANSAC algorithm》</strong> &amp;&amp;  <strong>Saranya K.C., Naidu V.P.S., Singhal V., Tanuja B.M.《Application of vision based techniques for UAV position estimation》</strong></p>
+<p>基于NCC的模板匹配方法 与 基于RANSAC的SURF特征匹配方法对比。</p>
+<p>NCC模板匹配方法先对图像和地图做边缘检测，然后以UAV图像为模板进行滑动窗口匹配，最大响应即无人机位置。特征点方法，提取无人机图像和地图的SURF特征匹配，用RANSAC除去异常值，计算剩余特征点匹配的几何变换恢复地图中无人机图像位置。</p>
+<p>NCC执行速度比RANDAC快，但NCC对尺度变化、旋转、噪声和模糊敏感，因此更适合旋转和尺度已知的情况。RANDAC鲁棒性更强，但最少特征数量的需求以及特征检测和提取时间不是恒定的事实。</p>
+</li>
+<li><p><strong>Shan M., Wang F., Lin F., Gao Z., Tang Y.Z., Chen B.M.《Google map aided visual navigation for UAVs in GPS-denied environment》</strong></p>
+<p>TODO</p>
+</li>
+<li><p><strong>Chiu H.P., Das A., Miller P., Samarasekera S., Kumar R.《Precise vision-aided aerial navigation》</strong></p>
+<p>TODO</p>
+</li>
+<li><p><strong>Mantelli M., Pittol D., Neuland R., Ribacki A., Maffei R., Jorge V., Prestes E., Kolberg M.《A novel measurement model based on abBRIEF for global localization of a UAV over satellite images》</strong></p>
+<p>TODO</p>
+</li>
+</ul>
 
                 
             </div>
@@ -529,6 +562,10 @@ GNSS通过无线信号测量，信号可被环境遮挡、反射、干扰，导�
                             
                                 <a href="/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">
                                     <span class="chip bg-color">论文阅读</span>
+                                </a>
+                            
+                                <a href="/tags/%E8%A7%86%E8%A7%89%E5%AE%9A%E4%BD%8D/">
+                                    <span class="chip bg-color">视觉定位</span>
                                 </a>
                             
                         </div>
@@ -728,8 +765,8 @@ GNSS通过无线信号测量，信号可被环境遮挡、反射、干扰，导�
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/SLAM/" class="post-category">
-                                    SLAM
+                            <a href="/categories/%E5%AE%9A%E4%BD%8D/" class="post-category">
+                                    定位
                                 </a>
                             
                             
@@ -742,6 +779,10 @@ GNSS通过无线信号测量，信号可被环境遮挡、反射、干扰，导�
                     
                     <a href="/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">
                         <span class="chip bg-color">论文阅读</span>
+                    </a>
+                    
+                    <a href="/tags/%E8%A7%86%E8%A7%89%E5%AE%9A%E4%BD%8D/">
+                        <span class="chip bg-color">视觉定位</span>
                     </a>
                     
                 </div>
@@ -778,8 +819,8 @@ GNSS通过无线信号测量，信号可被环境遮挡、反射、干扰，导�
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/SLAM/" class="post-category">
-                                    SLAM
+                            <a href="/categories/%E5%AE%9A%E4%BD%8D/" class="post-category">
+                                    定位
                                 </a>
                             
                             
@@ -791,6 +832,10 @@ GNSS通过无线信号测量，信号可被环境遮挡、反射、干扰，导�
                     
                     <a href="/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">
                         <span class="chip bg-color">论文阅读</span>
+                    </a>
+                    
+                    <a href="/tags/SLAM/">
+                        <span class="chip bg-color">SLAM</span>
                     </a>
                     
                 </div>
@@ -1024,7 +1069,7 @@ GNSS通过无线信号测量，信号可被环境遮挡、反射、干扰，导�
             
         </div>
         <div class="col s12 m4 l4 social-link social-statis">
-    <a href="https://github.com/blinkfox" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+    <a href="https://github.com/KKsatori" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
         <i class="fab fa-github"></i>
     </a>
 
