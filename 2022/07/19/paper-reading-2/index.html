@@ -1,0 +1,1101 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="论文阅读-A review on absolute visual localization for UAV, ksatori">
+    <meta name="description" content="论文阅读-A review on absolute visual localization for UAV前情：GNSS-INS方案存在问题
+GNSS通过无线信号测量，信号可被环境遮挡、反射、干扰，导致较大误差。
+存在安全漏洞，攻击者可通过">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>论文阅读-A review on absolute visual localization for UAV | ksatori</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">ksatori</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">ksatori</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/blinkfox/hexo-theme-matery" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/blinkfox/hexo-theme-matery" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">论文阅读-A review on absolute visual localization for UAV</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">
+                                <span class="chip bg-color">论文阅读</span>
+                            </a>
+                        
+                            <a href="/tags/%E8%A7%86%E8%A7%89%E5%AE%9A%E4%BD%8D/">
+                                <span class="chip bg-color">视觉定位</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E5%AE%9A%E4%BD%8D/" class="post-category">
+                                定位
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2022-07-19
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.min.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="论文阅读-A-review-on-absolute-visual-localization-for-UAV"><a href="#论文阅读-A-review-on-absolute-visual-localization-for-UAV" class="headerlink" title="论文阅读-A review on absolute visual localization for UAV"></a>论文阅读-A review on absolute visual localization for UAV</h1><h3 id="前情：GNSS-INS方案存在问题"><a href="#前情：GNSS-INS方案存在问题" class="headerlink" title="前情：GNSS-INS方案存在问题"></a>前情：GNSS-INS方案存在问题</h3><ol>
+<li>GNSS通过无线信号测量，信号可被环境遮挡、反射、干扰，导致较大误差。</li>
+<li>存在安全漏洞，攻击者可通过信号篡夺得到无人机控制权。</li>
+</ol>
+<p>故提出基于视觉和视觉辅助的替代或补充方案。</p>
+<h3 id="RVL-Relative-visual-localization"><a href="#RVL-Relative-visual-localization" class="headerlink" title="RVL(Relative visual localization)"></a>RVL(Relative visual localization)</h3><p>即帧到帧定位，包括视觉里程计(VO)、SLAM。</p>
+<ul>
+<li>VO、VIO：光流分析，匹配当前帧与先前帧差异估计位姿。</li>
+<li>SLAM：较VO，增加闭环检测和BA，若无闭环情况效果等同于VO。</li>
+</ul>
+<p>核心问题：误差积累即随时间漂移，虽能融合INS惯性数据，但仍没解决误差积累。</p>
+<h3 id="AVL-Absolute-visual-localization"><a href="#AVL-Absolute-visual-localization" class="headerlink" title="AVL(Absolute visual localization)"></a>AVL(Absolute visual localization)</h3><p>即根据无人机当前的观测，在地图中进行匹配，从而在地图中对自身位置进行定位。地图可是卫星地图或自行采集的地图。</p>
+<p>优点：不受时间漂移的影响。</p>
+<p>难点：</p>
+<ol>
+<li>地图集由不同传感器在不同时间、照明水平、分辨率拍摄带来的匹配挑战。</li>
+<li>减少在全局地图匹配时的搜索空间。</li>
+</ol>
+<h4 id="图像匹配："><a href="#图像匹配：" class="headerlink" title="图像匹配："></a>图像匹配：</h4><h5 id="1-Template-matching"><a href="#1-Template-matching" class="headerlink" title="1. Template matching"></a>1. Template matching</h5><p>直接匹配或密集匹配，将无人机当前视图作模板在地图中进行匹配。</p>
+<p>缺点：相似性判断的计算成本高。</p>
+<ul>
+<li><p><strong>Van Dalen G.J., Magree D.P., Johnson E.N.《Absolute localization using image alignment and particle filtering》：</strong></p>
+<p>normalized cross-correlation(NCC)，作为概率密度函数在粒子滤波中，执行无人机视图和全局参考地图的密集图像对齐。</p>
+<p>用高度信息在模板匹配前对视图缩放。</p>
+</li>
+<li><p><strong>Yol A., Delabarre B., Dame A., Dartois J.-E., Marchand E.《Vision-based absolute localization for unmanned aerial vehicles》</strong></p>
+<p>mutual information (MI)作为相似性度量使用，测两个图像的共享信息量。</p>
+</li>
+<li><p><strong>Wan X., Liu J., Yan H., Morgan G.L.K.《Illumination-invariant image matching for autonomous UAV localisation based on optical sensing》</strong></p>
+<p>基于光度不变的相位相关（illumination invariant Phase Correlation）的定位方案。</p>
+<p>Phase Correlation (PC)，一种基于傅里叶变换特性的模板匹配或图像对齐方法。算法利用两幅相似图像间的变化会在频域产生线性相位差，对太阳位置引起的光照变化不敏感。基于此，作者提出了一个基于卫星图像模板匹配的AVL方案。</p>
+</li>
+<li><p><strong>Patel B.《Visual Localization for UAVs in Outdoor GPS-denied Environments》</strong></p>
+<p>从MI获得normalized information distanc(NID)，但不依赖图像间的重叠量，因此定位更具鲁棒性。该方法结果与网格搜索的结果相似，但计算量要少。</p>
+<p>限制是假设UAV frame和参考图像间的旋转变化为0.</p>
+</li>
+</ul>
+<h5 id="2-Feature-points-matching"><a href="#2-Feature-points-matching" class="headerlink" title="2.Feature points matching"></a>2.Feature points matching</h5><p>模板匹配的有效替代方案，涉及特征点检测（角点、显著点检测）和描述子提取(gradient histograms from SIFT and the binary tests from BRIEF)。</p>
+<p>本节中大多使用特征点匹配和统计滤波的组合实现定位。</p>
+<ul>
+<li><p><strong>Seema B.S., Hemanth K., Naidu V.P.S.《Geo-registration of aerial images using RANSAC algorithm》</strong> &amp;&amp; <strong>Saranya K.C., Naidu V.P.S., Singhal V., Tanuja B.M.《Application of vision based techniques for UAV position estimation》</strong></p>
+<p>基于NCC的模板匹配方法 与 基于RANSAC的SURF特征匹配方法对比。</p>
+<p>NCC模板匹配方法先对图像和地图做边缘检测，然后以UAV图像为模板进行滑动窗口匹配，最大响应即无人机位置。特征点方法，提取无人机图像和地图的SURF特征匹配，用RANSAC除去异常值，计算剩余特征点匹配的几何变换恢复地图中无人机图像位置。</p>
+<p>NCC执行速度比RANDAC快，但NCC对尺度变化、旋转、噪声和模糊敏感，因此更适合旋转和尺度已知的情况。RANDAC鲁棒性更强，但最少特征数量的需求以及特征检测和提取时间不是恒定的事实。</p>
+</li>
+<li><p><strong>Shan M., Wang F., Lin F., Gao Z., Tang Y.Z., Chen B.M.《Google map aided visual navigation for UAVs in GPS-denied environment》</strong></p>
+<p>开发了一个框架，结合定向梯度直方图 (HOG) 、粒子滤波和光流(OF)，用HOG矢量距离估计位置，未通过阈值测试，再将OF用于估计。</p>
+</li>
+<li><p><strong>Chiu H.P., Das A., Miller P., Samarasekera S., Kumar R.《Precise vision-aided aerial navigation》</strong></p>
+<p>IMU与geo-referenced imagery提供的定位融合。固定滑动窗口估计飞机，两种估计过程：一是2D-3D tie-points and geo-registered feature tracks，二是逐帧跟踪特征扩展过程一来传递3D绝对信息。</p>
+</li>
+<li><p><strong>Mantelli M., Pittol D., Neuland R., Ribacki A., Maffei R., Jorge V., Prestes E., Kolberg M.《A novel measurement model based on abBRIEF for global localization of a UAV over satellite images》</strong></p>
+<p>基于Brief提出abBrief描述子，使用Lab颜色表示的a,b通道非灰度图，用 <a target="_blank" rel="noopener" href="https://www.sciencedirect.com/topics/engineering/quantization-level">quantization levels</a>减少噪声非高斯模糊，在整个图像上随机选择固定数量的像素对非在特征点周围的区域中选择了像素对（跳过关键点检测减少计算时间），为每个图像生成一个全局描述符。</p>
+<p>粒子滤波器(MCL)，用于估计无人机在状态空间中的位置，距离模型由粒子描述符和当前UAV图像描述符之间的汉明距离组成，运动更新基于VO系统（非重点）。</p>
+</li>
+<li><p><strong>Masselli A., Hanten R., Zell A.《Localization of unmanned aerial vehicles using terrain classification from aerial images》</strong></p>
+<p>基于地形分类的粒子滤波方法，地形为：草地，灌木丛，道路，建筑物。在图像网格的每个单元提取ORB描述子依据随机森林模型分类，地图和UAV图像进行地形分类，然后用粒子滤波的方法定位，仅依赖视觉。</p>
+</li>
+<li><p><strong>Shan M., Charan A.《Google map referenced UAV navigation via simultaneous feature detection and description》</strong></p>
+<p>同时使用特征检测和提取将UAV图像和地图匹配，用maximal self-dissimilarities (MSD)检测特征点，local self-similarities (LSS)提取描述子，OF缩小地图的搜索空间，计算匹配特征点描述子的欧几里得距离之和，与OF预测过大的估计位姿被排除。</p>
+<p>飞行路径结果相对接近GPS定位，远优与单独OF。</p>
+</li>
+<li><p><strong>Couturier A., Akhloufi M.A.《Relative visual localization (RVL) for UAV navigation》</strong></p>
+<p>基于AVL的RVL框架。具体如下图：(ORB效果最佳)</p>
+<p><img src="https://ars.els-cdn.com/content/image/1-s2.0-S0921889020305066-gr8_lrg.jpg"></p>
+<p>在<strong>《UAV navigation in GPS-denied environment using particle filtered RVL》</strong>中，引入带IMU运动模型的粒子滤波器和使用vote-based feature point matching测量模型，减少数据库搜索空间、计算时间和误报率，消除了计算时间对环境大小的依赖，实现了有限的执行时间。</p>
+<p>在 <strong>《Conditional probabilistic relative visual localization for unmanned aerial vehicles》</strong>提出粒子滤波的条件判断，用于粒子滤波器的更新步骤，考虑特征点的匹配质量，通过消除大多数剩余的误匹配特征点，实现更快更准确稳定的求定位解。该框架下，SURF效果较佳。</p>
+</li>
+</ul>
+<h5 id="3-Deep-learning"><a href="#3-Deep-learning" class="headerlink" title="3. Deep learning"></a>3. Deep learning</h5><p>基于深度学习的定位还在起步阶段，主要原因是难以构建本地化的端到端架构。RVL需要参考图，且查询地图是动态变化的，CNN的拟合速度不能满足要求；AVL，参考地图太大，现有GPU不能满足要求。此外，缺乏相关公开的数据集。</p>
+<ul>
+<li><p><strong>Amer K., Samy M., ElHakim R., Shaker M., ElHelw M.《Convolutional neural network-based deep urban signatures with application to drone localization》</strong></p>
+<p>提出deep urban signatures概念，用CNN根据视觉外观计算不同城市区域的独特特征。目的是通过分类方法探索不同城市地区或地区结构和组织间的差异（城市发展规划（或缺乏）、发展速度、建筑材料等因地区而异）。</p>
+<p>采用分层定位机制：district-level localization ， neighborhood-level localization.</p>
+<ul>
+<li>district-level localization：训练网络对七个地区之一的查询图像分类，以减少搜索空间。</li>
+<li>neighborhood-level localization：使用来自同一CNN的特征图执行最邻近搜索，从14th卷积层提取查询图像和参考图的特征图并比较，最接近查询图像的参考图的位置用于位置估计。</li>
+</ul>
+<p>主要缺点：在使用重定位之前需要在特定区域的数据集上训练网络。</p>
+</li>
+<li><p><strong>Nassar A., Amer K., ElHakim R., ElHelw M.《A deep cnn-based framework for enhanced aerial imagery registration with applications to uav geolocalization》</strong>&amp;&amp; <strong>Nassar A., ElHelw M.《Aerial imagery registration using deep learning for uav geolocalization》</strong></p>
+<p>将传统计算机视觉(SIFT+ORB)和CNN结合，基于卫星地图。</p>
+<p>UAV的位姿追踪：每3帧进行一次UAV到地图的校准(SIFT特征+RANSAC)，每帧计算前后序列帧间的里程计(ORB+RANSAC)</p>
+<p>基于语义分割的后端优化：将查询图像和匹配到的地图区域用U-Net语义分割，得到建筑物和道路的掩码（开闭操作对掩码细化），计算Hu矩进行暴力匹配，选择最好的匹配用于优化单应矩阵。</p>
+</li>
+<li><p><strong>Marcu A., Costea D., Slusanschi E., Leordeanu M.《A multi-stage multi-task neural network for aerial scene interpretation and geolocalization》</strong></p>
+<p>提出多阶段多任务(MSMT)神经网络架构，可同时执行航空图像分割和地理定位。第一阶段，语义分割网络获得道路分割；第二阶段第一分支，经纬度坐标回归；第二分支，UAV在观测图的位置估计。得到UAV位置后使用ICP优化，将道路分割和无人机附件地图道路精准对齐。</p>
+<p>缺点：道路分割网络的使用将解决方案限制在城市地区；经纬度回归器必须在飞行前用飞行区域的图像进行训练。</p>
+</li>
+<li><p><strong>Goforth H., Lucey S.《GPS-denied UAV localization using pre-existing satellite imagery》</strong> 有源码</p>
+<p>在优化框架内提出一种结合CNN和VO的AVL方法。DEEP+ICLK，将AVL结合到VO中优化，在滑动窗口添加位姿优化，但只能减少漂移不能消除漂移。</p>
+</li>
+<li><p><strong>Schleiss M.《Translating aerial images into street-map representations for visual self-localization of uavs》</strong></p>
+<p>提出基于条件生成对抗网络(cGAN)和模板匹配的方法。作者有意避免了VO概念以获得纯AVL方法。</p>
+<p>第一步，将当前UAV观测从图像转换为类似于地理地图表示，即map-like image，而无需卫星图像覆盖，通过cGAN对图像分割为三类： 道路，建筑、背景。然后和参考地图匹配，模板匹配技术使用归一化平方差(SSD)方法，匹配假定rotate和scale已知可用IMU获得，因此需要根据其将模板对齐再匹配。</p>
+</li>
+</ul>
+<h5 id="4-Visual-odometry"><a href="#4-Visual-odometry" class="headerlink" title="4.Visual odometry"></a>4.Visual odometry</h5><h5 id="4-Visual-odometry-1"><a href="#4-Visual-odometry-1" class="headerlink" title="4.Visual odometry"></a>4.Visual odometry</h5><p>VO 是一种基于比较相机捕获的连续帧的方法，在飞行过程中累积帧之间的运动差异以获得定位估计，适合 RVL，但可以通过使用以前飞行的数据扩展构建 AVL 系统，在这种方法中，用VO收集的数据被地理参考并收集在数据库中，以便稍后重新用于定位。</p>
+<ul>
+<li><p><strong>Warren M., Greeff M., Patel B., Collier J., Schoellig A.P., Barfoot T.D.《There’s no place like home: Visual teach and repeat for emergency return of multirotor UAVs during GPS failure》</strong></p>
+<p>提出一种GPS失效后可返回起始位置的方法，该系统使用云台稳定的灰度校准立体视觉系统来获取数据。…</p>
+</li>
+</ul>
+<h3 id="结果和讨论"><a href="#结果和讨论" class="headerlink" title="结果和讨论"></a>结果和讨论</h3><p>…</p>
+<h3 id="可能的研究趋势"><a href="#可能的研究趋势" class="headerlink" title="可能的研究趋势"></a>可能的研究趋势</h3><ol>
+<li>航空影像专用特征点方法的开发：缺乏专门的特征点检测和提取方法的研究，可进一步探索。</li>
+<li>视觉里程计AVL：少量研究将VO应用于AVL，证明了其潜力，有待进一步研究。</li>
+<li>深度学习 AVL：深度学习方法有局限，ALV特点使泛化性难以保证，需开展更多工作来克服挑战减少局限性。</li>
+<li>AVL公开可用数据集：包括卫星图像、真实无人机飞行数据、惯性数据。</li>
+<li>开源代码：以实现更好的重复性。</li>
+<li>嵌入式 GPU 实现</li>
+<li>Hyper-spectral AVL： 在高光谱定位领域做的工作很少，据我们所知，在 AVL 领域没有做。 例如，将短波红外 (SWIR) 图像配准到 RGB 卫星参考地图，因为它可以在云和雾存在的情况下进行视觉定位。</li>
+</ol>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">ksatori</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://example.com/2022/07/19/paper-reading-2/">http://example.com/2022/07/19/paper-reading-2/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">ksatori</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">
+                                    <span class="chip bg-color">论文阅读</span>
+                                </a>
+                            
+                                <a href="/tags/%E8%A7%86%E8%A7%89%E5%AE%9A%E4%BD%8D/">
+                                    <span class="chip bg-color">视觉定位</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2022/07/19/paper-reading-2/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="论文阅读-A review on absolute visual localization for UAV">
+                        
+                        <span class="card-title">论文阅读-A review on absolute visual localization for UAV</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-07-19
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%AE%9A%E4%BD%8D/" class="post-category">
+                                    定位
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">
+                        <span class="chip bg-color">论文阅读</span>
+                    </a>
+                    
+                    <a href="/tags/%E8%A7%86%E8%A7%89%E5%AE%9A%E4%BD%8D/">
+                        <span class="chip bg-color">视觉定位</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/05/02/paper-reading-1/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="论文阅读-Past,Present,and Future of Simultaneous Localization and Mapping:Toward the Robust-Perception Age">
+                        
+                        <span class="card-title">论文阅读-Past,Present,and Future of Simultaneous Localization and Mapping:Toward the Robust-Perception Age</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-05-02
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%AE%9A%E4%BD%8D/" class="post-category">
+                                    定位
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/SLAM/">
+                        <span class="chip bg-color">SLAM</span>
+                    </a>
+                    
+                    <a href="/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">
+                        <span class="chip bg-color">论文阅读</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+  <!-- 是否加载使用自带的 prismjs. -->
+  <script type="text/javascript" src="/libs/prism/prism.min.js"></script>
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2021-2025</span>
+            
+            <a href="/about" target="_blank">ksatori</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/KKsatori" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>
