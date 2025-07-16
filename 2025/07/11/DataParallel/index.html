@@ -4,10 +4,10 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="论文阅读-A review on absolute visual localization for UAV, ksatori">
-    <meta name="description" content="论文阅读-A review on absolute visual localization for UAV前情：GNSS-INS方案存在问题
-GNSS通过无线信号测量，信号可被环境遮挡、反射、干扰，导致较大误差。
-存在安全漏洞，攻击者可通过">
+    <meta name="keywords" content="使用DistributedDataParallel单机多卡训练, ksatori">
+    <meta name="description" content="使用DistributedDataParallel单机多卡训练代码编写注意1. 初始化进程组backend：GPU通讯方式，推荐”nccl”
+world_size：当前节点使用多少张GPU，单机多卡情况下即多卡数量
+rank：当前进程使用的">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -19,7 +19,7 @@ GNSS通过无线信号测量，信号可被环境遮挡、反射、干扰，导�
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>论文阅读-A review on absolute visual localization for UAV | ksatori</title>
+    <title>使用DistributedDataParallel单机多卡训练 | ksatori</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -290,12 +290,12 @@ GNSS通过无线信号测量，信号可被环境遮挡、反射、干扰，导�
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">论文阅读-A review on absolute visual localization for UAV</h1>
+                    <h1 class="description center-align post-title">使用DistributedDataParallel单机多卡训练</h1>
                 </div>
             </div>
         </div>
@@ -319,12 +319,8 @@ GNSS通过无线信号测量，信号可被环境遮挡、反射、干扰，导�
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">
-                                <span class="chip bg-color">论文阅读</span>
-                            </a>
-                        
-                            <a href="/tags/%E8%A7%86%E8%A7%89%E5%AE%9A%E4%BD%8D/">
-                                <span class="chip bg-color">视觉定位</span>
+                            <a href="/tags/%E5%B9%B6%E8%A1%8C%E8%AE%AD%E7%BB%83/">
+                                <span class="chip bg-color">并行训练</span>
                             </a>
                         
                     </div>
@@ -335,8 +331,8 @@ GNSS通过无线信号测量，信号可被环境遮挡、反射、干扰，导�
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E5%AE%9A%E4%BD%8D/" class="post-category">
-                                定位
+                            <a href="/categories/python/" class="post-category">
+                                python
                             </a>
                         
                     </div>
@@ -348,7 +344,7 @@ GNSS通过无线信号测量，信号可被环境遮挡、反射、干扰，导�
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-07-19
+                    2025-07-11
                 </div>
                 
 
@@ -372,119 +368,57 @@ GNSS通过无线信号测量，信号可被环境遮挡、反射、干扰，导�
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="论文阅读-A-review-on-absolute-visual-localization-for-UAV"><a href="#论文阅读-A-review-on-absolute-visual-localization-for-UAV" class="headerlink" title="论文阅读-A review on absolute visual localization for UAV"></a>论文阅读-A review on absolute visual localization for UAV</h1><h3 id="前情：GNSS-INS方案存在问题"><a href="#前情：GNSS-INS方案存在问题" class="headerlink" title="前情：GNSS-INS方案存在问题"></a>前情：GNSS-INS方案存在问题</h3><ol>
-<li>GNSS通过无线信号测量，信号可被环境遮挡、反射、干扰，导致较大误差。</li>
-<li>存在安全漏洞，攻击者可通过信号篡夺得到无人机控制权。</li>
-</ol>
-<p>故提出基于视觉和视觉辅助的替代或补充方案。</p>
-<h3 id="RVL-Relative-visual-localization"><a href="#RVL-Relative-visual-localization" class="headerlink" title="RVL(Relative visual localization)"></a>RVL(Relative visual localization)</h3><p>即帧到帧定位，包括视觉里程计(VO)、SLAM。</p>
+                <h1 id="使用DistributedDataParallel单机多卡训练"><a href="#使用DistributedDataParallel单机多卡训练" class="headerlink" title="使用DistributedDataParallel单机多卡训练"></a>使用DistributedDataParallel单机多卡训练</h1><h3 id="代码编写注意"><a href="#代码编写注意" class="headerlink" title="代码编写注意"></a>代码编写注意</h3><h4 id="1-初始化进程组"><a href="#1-初始化进程组" class="headerlink" title="1. 初始化进程组"></a>1. 初始化进程组</h4><p>backend：GPU通讯方式，推荐”nccl”</p>
+<p>world_size：当前节点使用多少张GPU，单机多卡情况下即多卡数量</p>
+<p>rank：当前进程使用的GPU编号。执行<code>torch.distributed.launch</code>会传入<code>local_rank</code>即所需内容；torchrun则是<code>os.environ[&quot;RANK&quot;]</code></p>
+<pre class="language-python" data-language="python"><code class="language-python">torch<span class="token punctuation">.</span>distributed<span class="token punctuation">.</span>init_process_group<span class="token punctuation">(</span>backend<span class="token operator">=</span><span class="token string">'nccl'</span><span class="token punctuation">,</span> rank<span class="token operator">=</span>args<span class="token punctuation">.</span>local_rank<span class="token punctuation">,</span> world_size<span class="token operator">=</span>n_gpus<span class="token punctuation">)</span></code></pre>
+
+<h4 id="2-指定进程可使用gpu的名称"><a href="#2-指定进程可使用gpu的名称" class="headerlink" title="2. 指定进程可使用gpu的名称"></a>2. 指定进程可使用gpu的名称</h4><pre class="language-python" data-language="python"><code class="language-python">torch<span class="token punctuation">.</span>cuda<span class="token punctuation">.</span>set_device<span class="token punctuation">(</span>args<span class="token punctuation">.</span>local_rank<span class="token punctuation">)</span></code></pre>
+
+<h4 id="3-模型转变"><a href="#3-模型转变" class="headerlink" title="3. 模型转变"></a>3. 模型转变</h4><pre class="language-python" data-language="python"><code class="language-python">model<span class="token operator">=</span>DistributedDataParallel<span class="token punctuation">(</span>model<span class="token punctuation">.</span>cuda<span class="token punctuation">(</span>args<span class="token punctuation">.</span>local_rank<span class="token punctuation">)</span><span class="token punctuation">,</span>device_ids<span class="token operator">=</span><span class="token punctuation">[</span>args<span class="token punctuation">.</span>local_rank<span class="token punctuation">]</span><span class="token punctuation">)</span></code></pre>
+
+<p>可增加参数：</p>
 <ul>
-<li>VO、VIO：光流分析，匹配当前帧与先前帧差异估计位姿。</li>
-<li>SLAM：较VO，增加闭环检测和BA，若无闭环情况效果等同于VO。</li>
+<li><code>output_device=local_rank</code>：指定前向传播输出结果的目标 GPU</li>
+<li><code>find_unused_parameters=True</code>：用于处理模型在前向传播中没有产生梯度的参数。True会追踪所有参数，即使参数未使用；False(默认值)假设所有参数参与计算，如果存在未被使用参数则程序报错</li>
+<li>调用<code>model.forward()</code>或<code>model()</code>时DDP会自动调用底层<code>module.forward()</code>，但如果是自定义方法，需通过<code>.module</code>访问，即<code>model.module.xxx()</code></li>
 </ul>
-<p>核心问题：误差积累即随时间漂移，虽能融合INS惯性数据，但仍没解决误差积累。</p>
-<h3 id="AVL-Absolute-visual-localization"><a href="#AVL-Absolute-visual-localization" class="headerlink" title="AVL(Absolute visual localization)"></a>AVL(Absolute visual localization)</h3><p>即根据无人机当前的观测，在地图中进行匹配，从而在地图中对自身位置进行定位。地图可是卫星地图或自行采集的地图。</p>
-<p>优点：不受时间漂移的影响。</p>
-<p>难点：</p>
-<ol>
-<li>地图集由不同传感器在不同时间、照明水平、分辨率拍摄带来的匹配挑战。</li>
-<li>减少在全局地图匹配时的搜索空间。</li>
-</ol>
-<h4 id="图像匹配："><a href="#图像匹配：" class="headerlink" title="图像匹配："></a>图像匹配：</h4><h5 id="1-Template-matching"><a href="#1-Template-matching" class="headerlink" title="1. Template matching"></a>1. Template matching</h5><p>直接匹配或密集匹配，将无人机当前视图作模板在地图中进行匹配。</p>
-<p>缺点：相似性判断的计算成本高。</p>
+<h4 id="4-数据分配"><a href="#4-数据分配" class="headerlink" title="4. 数据分配"></a>4. 数据分配</h4><p>将数据随机分配至不同GPU</p>
+<pre class="language-python" data-language="python"><code class="language-python">train_sampler<span class="token operator">=</span>DistributedSampler<span class="token punctuation">(</span>train_dataset<span class="token punctuation">)</span>
+train_dataloader<span class="token operator">=</span>Dataloader<span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span>sampler<span class="token operator">=</span>train_sampler<span class="token punctuation">)</span>
+data<span class="token operator">=</span>data<span class="token punctuation">.</span>cuda<span class="token punctuation">(</span>args<span class="token punctuation">.</span>local_rank<span class="token punctuation">)</span> <span class="token comment"># data代指数据 </span></code></pre>
+
+<p>每个周期开始都需要调用<code>train_sampler.set_epoch(epoch)</code>使数据充分打乱</p>
+<p>执行sampler，则不要在Dataloader中设置<code>shuffle=True</code></p>
+<p>只需要在训练集执行sampler</p>
+<h4 id="5-模型的保存与加载"><a href="#5-模型的保存与加载" class="headerlink" title="5. 模型的保存与加载"></a>5. 模型的保存与加载</h4><ul>
+<li>torch.save在<code>local_rank=0</code>的位置进行保存，同样注意调用<code>model.module.state_dict()</code></li>
+<li>torch.load注意map_location</li>
+</ul>
+<h3 id="执行命令"><a href="#执行命令" class="headerlink" title="执行命令"></a>执行命令</h3><p>nproc_per_node：进程数目</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">python <span class="token parameter variable">-m</span> torch.distributed.launch <span class="token parameter variable">--nproc_per_node</span><span class="token operator">=</span>n_gpus train.py</code></pre>
+
+<p><strong>注意：</strong></p>
 <ul>
-<li><p><strong>Van Dalen G.J., Magree D.P., Johnson E.N.《Absolute localization using image alignment and particle filtering》：</strong></p>
-<p>normalized cross-correlation(NCC)，作为概率密度函数在粒子滤波中，执行无人机视图和全局参考地图的密集图像对齐。</p>
-<p>用高度信息在模板匹配前对视图缩放。</p>
-</li>
-<li><p><strong>Yol A., Delabarre B., Dame A., Dartois J.-E., Marchand E.《Vision-based absolute localization for unmanned aerial vehicles》</strong></p>
-<p>mutual information (MI)作为相似性度量使用，测两个图像的共享信息量。</p>
-</li>
-<li><p><strong>Wan X., Liu J., Yan H., Morgan G.L.K.《Illumination-invariant image matching for autonomous UAV localisation based on optical sensing》</strong></p>
-<p>基于光度不变的相位相关（illumination invariant Phase Correlation）的定位方案。</p>
-<p>Phase Correlation (PC)，一种基于傅里叶变换特性的模板匹配或图像对齐方法。算法利用两幅相似图像间的变化会在频域产生线性相位差，对太阳位置引起的光照变化不敏感。基于此，作者提出了一个基于卫星图像模板匹配的AVL方案。</p>
-</li>
-<li><p><strong>Patel B.《Visual Localization for UAVs in Outdoor GPS-denied Environments》</strong></p>
-<p>从MI获得normalized information distanc(NID)，但不依赖图像间的重叠量，因此定位更具鲁棒性。该方法结果与网格搜索的结果相似，但计算量要少。</p>
-<p>限制是假设UAV frame和参考图像间的旋转变化为0.</p>
-</li>
+<li>train.py中要有接受local_rank的参数选项，launch会传入这个参数</li>
+<li>每个进程的batch_size是一个GPU所需要的batch_size大小</li>
 </ul>
-<h5 id="2-Feature-points-matching"><a href="#2-Feature-points-matching" class="headerlink" title="2.Feature points matching"></a>2.Feature points matching</h5><p>模板匹配的有效替代方案，涉及特征点检测（角点、显著点检测）和描述子提取(gradient histograms from SIFT and the binary tests from BRIEF)。</p>
-<p>本节中大多使用特征点匹配和统计滤波的组合实现定位。</p>
-<ul>
-<li><p><strong>Seema B.S., Hemanth K., Naidu V.P.S.《Geo-registration of aerial images using RANSAC algorithm》</strong> &amp;&amp; <strong>Saranya K.C., Naidu V.P.S., Singhal V., Tanuja B.M.《Application of vision based techniques for UAV position estimation》</strong></p>
-<p>基于NCC的模板匹配方法 与 基于RANSAC的SURF特征匹配方法对比。</p>
-<p>NCC模板匹配方法先对图像和地图做边缘检测，然后以UAV图像为模板进行滑动窗口匹配，最大响应即无人机位置。特征点方法，提取无人机图像和地图的SURF特征匹配，用RANSAC除去异常值，计算剩余特征点匹配的几何变换恢复地图中无人机图像位置。</p>
-<p>NCC执行速度比RANDAC快，但NCC对尺度变化、旋转、噪声和模糊敏感，因此更适合旋转和尺度已知的情况。RANDAC鲁棒性更强，但最少特征数量的需求以及特征检测和提取时间不是恒定的事实。</p>
-</li>
-<li><p><strong>Shan M., Wang F., Lin F., Gao Z., Tang Y.Z., Chen B.M.《Google map aided visual navigation for UAVs in GPS-denied environment》</strong></p>
-<p>开发了一个框架，结合定向梯度直方图 (HOG) 、粒子滤波和光流(OF)，用HOG矢量距离估计位置，未通过阈值测试，再将OF用于估计。</p>
-</li>
-<li><p><strong>Chiu H.P., Das A., Miller P., Samarasekera S., Kumar R.《Precise vision-aided aerial navigation》</strong></p>
-<p>IMU与geo-referenced imagery提供的定位融合。固定滑动窗口估计飞机，两种估计过程：一是2D-3D tie-points and geo-registered feature tracks，二是逐帧跟踪特征扩展过程一来传递3D绝对信息。</p>
-</li>
-<li><p><strong>Mantelli M., Pittol D., Neuland R., Ribacki A., Maffei R., Jorge V., Prestes E., Kolberg M.《A novel measurement model based on abBRIEF for global localization of a UAV over satellite images》</strong></p>
-<p>基于Brief提出abBrief描述子，使用Lab颜色表示的a,b通道非灰度图，用 <a target="_blank" rel="noopener" href="https://www.sciencedirect.com/topics/engineering/quantization-level">quantization levels</a>减少噪声非高斯模糊，在整个图像上随机选择固定数量的像素对非在特征点周围的区域中选择了像素对（跳过关键点检测减少计算时间），为每个图像生成一个全局描述符。</p>
-<p>粒子滤波器(MCL)，用于估计无人机在状态空间中的位置，距离模型由粒子描述符和当前UAV图像描述符之间的汉明距离组成，运动更新基于VO系统（非重点）。</p>
-</li>
-<li><p><strong>Masselli A., Hanten R., Zell A.《Localization of unmanned aerial vehicles using terrain classification from aerial images》</strong></p>
-<p>基于地形分类的粒子滤波方法，地形为：草地，灌木丛，道路，建筑物。在图像网格的每个单元提取ORB描述子依据随机森林模型分类，地图和UAV图像进行地形分类，然后用粒子滤波的方法定位，仅依赖视觉。</p>
-</li>
-<li><p><strong>Shan M., Charan A.《Google map referenced UAV navigation via simultaneous feature detection and description》</strong></p>
-<p>同时使用特征检测和提取将UAV图像和地图匹配，用maximal self-dissimilarities (MSD)检测特征点，local self-similarities (LSS)提取描述子，OF缩小地图的搜索空间，计算匹配特征点描述子的欧几里得距离之和，与OF预测过大的估计位姿被排除。</p>
-<p>飞行路径结果相对接近GPS定位，远优与单独OF。</p>
-</li>
-<li><p><strong>Couturier A., Akhloufi M.A.《Relative visual localization (RVL) for UAV navigation》</strong></p>
-<p>基于AVL的RVL框架。具体如下图：(ORB效果最佳)</p>
-<p><img src="https://ars.els-cdn.com/content/image/1-s2.0-S0921889020305066-gr8_lrg.jpg"></p>
-<p>在<strong>《UAV navigation in GPS-denied environment using particle filtered RVL》</strong>中，引入带IMU运动模型的粒子滤波器和使用vote-based feature point matching测量模型，减少数据库搜索空间、计算时间和误报率，消除了计算时间对环境大小的依赖，实现了有限的执行时间。</p>
-<p>在 <strong>《Conditional probabilistic relative visual localization for unmanned aerial vehicles》</strong>提出粒子滤波的条件判断，用于粒子滤波器的更新步骤，考虑特征点的匹配质量，通过消除大多数剩余的误匹配特征点，实现更快更准确稳定的求定位解。该框架下，SURF效果较佳。</p>
-</li>
-</ul>
-<h5 id="3-Deep-learning"><a href="#3-Deep-learning" class="headerlink" title="3. Deep learning"></a>3. Deep learning</h5><p>基于深度学习的定位还在起步阶段，主要原因是难以构建本地化的端到端架构。RVL需要参考图，且查询地图是动态变化的，CNN的拟合速度不能满足要求；AVL，参考地图太大，现有GPU不能满足要求。此外，缺乏相关公开的数据集。</p>
-<ul>
-<li><p><strong>Amer K., Samy M., ElHakim R., Shaker M., ElHelw M.《Convolutional neural network-based deep urban signatures with application to drone localization》</strong></p>
-<p>提出deep urban signatures概念，用CNN根据视觉外观计算不同城市区域的独特特征。目的是通过分类方法探索不同城市地区或地区结构和组织间的差异（城市发展规划（或缺乏）、发展速度、建筑材料等因地区而异）。</p>
-<p>采用分层定位机制：district-level localization ， neighborhood-level localization.</p>
-<ul>
-<li>district-level localization：训练网络对七个地区之一的查询图像分类，以减少搜索空间。</li>
-<li>neighborhood-level localization：使用来自同一CNN的特征图执行最邻近搜索，从14th卷积层提取查询图像和参考图的特征图并比较，最接近查询图像的参考图的位置用于位置估计。</li>
-</ul>
-<p>主要缺点：在使用重定位之前需要在特定区域的数据集上训练网络。</p>
-</li>
-<li><p><strong>Nassar A., Amer K., ElHakim R., ElHelw M.《A deep cnn-based framework for enhanced aerial imagery registration with applications to uav geolocalization》</strong>&amp;&amp; <strong>Nassar A., ElHelw M.《Aerial imagery registration using deep learning for uav geolocalization》</strong></p>
-<p>将传统计算机视觉(SIFT+ORB)和CNN结合，基于卫星地图。</p>
-<p>UAV的位姿追踪：每3帧进行一次UAV到地图的校准(SIFT特征+RANSAC)，每帧计算前后序列帧间的里程计(ORB+RANSAC)</p>
-<p>基于语义分割的后端优化：将查询图像和匹配到的地图区域用U-Net语义分割，得到建筑物和道路的掩码（开闭操作对掩码细化），计算Hu矩进行暴力匹配，选择最好的匹配用于优化单应矩阵。</p>
-</li>
-<li><p><strong>Marcu A., Costea D., Slusanschi E., Leordeanu M.《A multi-stage multi-task neural network for aerial scene interpretation and geolocalization》</strong></p>
-<p>提出多阶段多任务(MSMT)神经网络架构，可同时执行航空图像分割和地理定位。第一阶段，语义分割网络获得道路分割；第二阶段第一分支，经纬度坐标回归；第二分支，UAV在观测图的位置估计。得到UAV位置后使用ICP优化，将道路分割和无人机附件地图道路精准对齐。</p>
-<p>缺点：道路分割网络的使用将解决方案限制在城市地区；经纬度回归器必须在飞行前用飞行区域的图像进行训练。</p>
-</li>
-<li><p><strong>Goforth H., Lucey S.《GPS-denied UAV localization using pre-existing satellite imagery》</strong> 有源码</p>
-<p>在优化框架内提出一种结合CNN和VO的AVL方法。DEEP+ICLK，将AVL结合到VO中优化，在滑动窗口添加位姿优化，但只能减少漂移不能消除漂移。</p>
-</li>
-<li><p><strong>Schleiss M.《Translating aerial images into street-map representations for visual self-localization of uavs》</strong></p>
-<p>提出基于条件生成对抗网络(cGAN)和模板匹配的方法。作者有意避免了VO概念以获得纯AVL方法。</p>
-<p>第一步，将当前UAV观测从图像转换为类似于地理地图表示，即map-like image，而无需卫星图像覆盖，通过cGAN对图像分割为三类： 道路，建筑、背景。然后和参考地图匹配，模板匹配技术使用归一化平方差(SSD)方法，匹配假定rotate和scale已知可用IMU获得，因此需要根据其将模板对齐再匹配。</p>
-</li>
-</ul>
-<h5 id="4-Visual-odometry"><a href="#4-Visual-odometry" class="headerlink" title="4.Visual odometry"></a>4.Visual odometry</h5><h5 id="4-Visual-odometry-1"><a href="#4-Visual-odometry-1" class="headerlink" title="4.Visual odometry"></a>4.Visual odometry</h5><p>VO 是一种基于比较相机捕获的连续帧的方法，在飞行过程中累积帧之间的运动差异以获得定位估计，适合 RVL，但可以通过使用以前飞行的数据扩展构建 AVL 系统，在这种方法中，用VO收集的数据被地理参考并收集在数据库中，以便稍后重新用于定位。</p>
-<ul>
-<li><p><strong>Warren M., Greeff M., Patel B., Collier J., Schoellig A.P., Barfoot T.D.《There’s no place like home: Visual teach and repeat for emergency return of multirotor UAVs during GPS failure》</strong></p>
-<p>提出一种GPS失效后可返回起始位置的方法，该系统使用云台稳定的灰度校准立体视觉系统来获取数据。…</p>
-</li>
-</ul>
-<h3 id="结果和讨论"><a href="#结果和讨论" class="headerlink" title="结果和讨论"></a>结果和讨论</h3><p>…</p>
-<h3 id="可能的研究趋势"><a href="#可能的研究趋势" class="headerlink" title="可能的研究趋势"></a>可能的研究趋势</h3><ol>
-<li>航空影像专用特征点方法的开发：缺乏专门的特征点检测和提取方法的研究，可进一步探索。</li>
-<li>视觉里程计AVL：少量研究将VO应用于AVL，证明了其潜力，有待进一步研究。</li>
-<li>深度学习 AVL：深度学习方法有局限，ALV特点使泛化性难以保证，需开展更多工作来克服挑战减少局限性。</li>
-<li>AVL公开可用数据集：包括卫星图像、真实无人机飞行数据、惯性数据。</li>
-<li>开源代码：以实现更好的重复性。</li>
-<li>嵌入式 GPU 实现</li>
-<li>Hyper-spectral AVL： 在高光谱定位领域做的工作很少，据我们所知，在 AVL 领域没有做。 例如，将短波红外 (SWIR) 图像配准到 RGB 卫星参考地图，因为它可以在云和雾存在的情况下进行视觉定位。</li>
-</ol>
+<h5 id="也可以使用下述命令"><a href="#也可以使用下述命令" class="headerlink" title="也可以使用下述命令"></a>也可以使用下述命令</h5><pre class="language-bash" data-language="bash"><code class="language-bash">torchrun <span class="token parameter variable">--nproc_per_node</span><span class="token operator">=</span><span class="token number">4</span> train.py</code></pre>
+
+<p>其他可加参数：</p>
+<p><code>--nnodes</code>:节点总数（多机训练用）</p>
+<p><code>--node_rank</code>:当前节点的rank（多机训练用）</p>
+<p><code>--master_addr</code>:master节点IP地址（单机训练可省）</p>
+<p><code>--master_port</code>:master节点通信端口（单机训练可省）</p>
+<p><strong>注意：</strong></p>
+<p>torchrun和torch.distributed.launch不一样，torchrun不再自动传递<code>local_rank</code>，需通过代码获取</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> os
+local_rank <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>environ<span class="token punctuation">[</span><span class="token string">"LOCAL_RANK"</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment">#本节点上的rank</span>
+rank <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>environ<span class="token punctuation">[</span><span class="token string">"RANK"</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment">#全局rank</span>
+world_size <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>environ<span class="token punctuation">[</span><span class="token string">"WORLD_SIZE"</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment">#总进程数</span></code></pre>
+
+
+
 
                 
             </div>
@@ -511,7 +445,7 @@ GNSS通过无线信号测量，信号可被环境遮挡、反射、干扰，导�
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/2022/07/19/paper-reading-2/">http://example.com/2022/07/19/paper-reading-2/</a>
+                    <a href="http://example.com/2025/07/11/DataParallel/">http://example.com/2025/07/11/DataParallel/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -549,12 +483,8 @@ GNSS通过无线信号测量，信号可被环境遮挡、反射、干扰，导�
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">
-                                    <span class="chip bg-color">论文阅读</span>
-                                </a>
-                            
-                                <a href="/tags/%E8%A7%86%E8%A7%89%E5%AE%9A%E4%BD%8D/">
-                                    <span class="chip bg-color">视觉定位</span>
+                                <a href="/tags/%E5%B9%B6%E8%A1%8C%E8%AE%AD%E7%BB%83/">
+                                    <span class="chip bg-color">并行训练</span>
                                 </a>
                             
                         </div>
@@ -600,9 +530,10 @@ GNSS通过无线信号测量，信号可被环境遮挡、反射、干扰，导�
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2025/07/11/DataParallel/">
                     <div class="card-image">
@@ -620,9 +551,9 @@ GNSS通过无线信号测量，信号可被环境遮挡、反射、干扰，导�
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2025-07-11
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-07-11
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -635,6 +566,7 @@ GNSS通过无线信号测量，信号可被环境遮挡、反射、干扰，导�
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -653,13 +585,13 @@ GNSS通过无线信号测量，信号可被环境遮挡、反射、干扰，导�
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/05/02/paper-reading-1/">
+                <a href="/2022/07/19/paper-reading-2/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="论文阅读-Past,Present,and Future of Simultaneous Localization and Mapping:Toward the Robust-Perception Age">
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="论文阅读-A review on absolute visual localization for UAV">
                         
-                        <span class="card-title">论文阅读-Past,Present,and Future of Simultaneous Localization and Mapping:Toward the Robust-Perception Age</span>
+                        <span class="card-title">论文阅读-A review on absolute visual localization for UAV</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -670,7 +602,7 @@ GNSS通过无线信号测量，信号可被环境遮挡、反射、干扰，导�
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-05-02
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-07-19
                             </span>
                         <span class="publish-author">
                             
@@ -691,8 +623,8 @@ GNSS通过无线信号测量，信号可被环境遮挡、反射、干扰，导�
                         <span class="chip bg-color">论文阅读</span>
                     </a>
                     
-                    <a href="/tags/SLAM/">
-                        <span class="chip bg-color">SLAM</span>
+                    <a href="/tags/%E8%A7%86%E8%A7%89%E5%AE%9A%E4%BD%8D/">
+                        <span class="chip bg-color">视觉定位</span>
                     </a>
                     
                 </div>
