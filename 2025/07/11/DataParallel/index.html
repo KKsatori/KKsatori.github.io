@@ -371,7 +371,12 @@ rank：当前进程使用的">
                 <h1 id="使用DistributedDataParallel单机多卡训练"><a href="#使用DistributedDataParallel单机多卡训练" class="headerlink" title="使用DistributedDataParallel单机多卡训练"></a>使用DistributedDataParallel单机多卡训练</h1><h3 id="代码编写注意"><a href="#代码编写注意" class="headerlink" title="代码编写注意"></a>代码编写注意</h3><h4 id="1-初始化进程组"><a href="#1-初始化进程组" class="headerlink" title="1. 初始化进程组"></a>1. 初始化进程组</h4><p>backend：GPU通讯方式，推荐”nccl”</p>
 <p>world_size：当前节点使用多少张GPU，单机多卡情况下即多卡数量</p>
 <p>rank：当前进程使用的GPU编号。执行<code>torch.distributed.launch</code>会传入<code>local_rank</code>即所需内容；torchrun则是<code>os.environ[&quot;RANK&quot;]</code></p>
-<pre class="language-python" data-language="python"><code class="language-python">torch<span class="token punctuation">.</span>distributed<span class="token punctuation">.</span>init_process_group<span class="token punctuation">(</span>backend<span class="token operator">=</span><span class="token string">'nccl'</span><span class="token punctuation">,</span> rank<span class="token operator">=</span>args<span class="token punctuation">.</span>local_rank<span class="token punctuation">,</span> world_size<span class="token operator">=</span>n_gpus<span class="token punctuation">)</span></code></pre>
+<pre class="language-python" data-language="python"><code class="language-python">torch<span class="token punctuation">.</span>distributed<span class="token punctuation">.</span>init_process_group<span class="token punctuation">(</span>backend<span class="token operator">=</span><span class="token string">'nccl'</span><span class="token punctuation">,</span> rank<span class="token operator">=</span>args<span class="token punctuation">.</span>local_rank<span class="token punctuation">,</span> world_size<span class="token operator">=</span>n_gpus<span class="token punctuation">)</span>
+
+<span class="token comment"># 训练结束进程销毁</span>
+<span class="token keyword">if</span> dist<span class="token punctuation">.</span>is_initialized<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        dist<span class="token punctuation">.</span>barrier<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment"># 等待同步再退出</span>
+dist<span class="token punctuation">.</span>destroy_process_group<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
 
 <h4 id="2-指定进程可使用gpu的名称"><a href="#2-指定进程可使用gpu的名称" class="headerlink" title="2. 指定进程可使用gpu的名称"></a>2. 指定进程可使用gpu的名称</h4><pre class="language-python" data-language="python"><code class="language-python">torch<span class="token punctuation">.</span>cuda<span class="token punctuation">.</span>set_device<span class="token punctuation">(</span>args<span class="token punctuation">.</span>local_rank<span class="token punctuation">)</span></code></pre>
 
@@ -395,13 +400,55 @@ data<span class="token operator">=</span>data<span class="token punctuation">.</
 <li>torch.save在<code>local_rank=0</code>的位置进行保存，同样注意调用<code>model.module.state_dict()</code></li>
 <li>torch.load注意map_location</li>
 </ul>
+<h4 id="6-小事项"><a href="#6-小事项" class="headerlink" title="6. 小事项"></a>6. 小事项</h4><ul>
+<li><p>为避免通信错误<code>ERROR:torch.distributed.elastic.multiprocessing.api:failed</code>，建议</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">for</span> epoch <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>start_epoch<span class="token punctuation">,</span> total_epochs <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    train<span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span>
+   
+    <span class="token comment"># 等待所有 GPU 训练完成后再进入验证</span>
+    <span class="token keyword">if</span> dist<span class="token punctuation">.</span>is_initialized<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        dist<span class="token punctuation">.</span>barrier<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    
+    <span class="token comment"># 通常只让 rank==0 的进程做验证、模型保存、输出，避免重复评估</span>
+    <span class="token keyword">if</span> dist<span class="token punctuation">.</span>get_rank<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">:</span>
+        validate<span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span>
+        save_checkpoint<span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+</li>
+<li><p>显存不足相关问题</p>
+<ul>
+<li><p>排查显存泄漏问题可在训练前后输出<code>torch.cuda.memory_allocated()</code>，如果一直增长但没有释放，说明有显存泄漏</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># [1] 显存状态：训练开始前</span>
+  rank <span class="token operator">=</span> dist<span class="token punctuation">.</span>get_rank<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">if</span> dist<span class="token punctuation">.</span>is_initialized<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">else</span> <span class="token number">0</span>
+  <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"[Rank </span><span class="token interpolation"><span class="token punctuation">&#123;</span>rank<span class="token punctuation">&#125;</span></span><span class="token string"> | Epoch </span><span class="token interpolation"><span class="token punctuation">&#123;</span>epoch<span class="token punctuation">&#125;</span></span><span class="token string">] Before training:"</span></span><span class="token punctuation">)</span>
+  <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"  Allocated: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>torch<span class="token punctuation">.</span>cuda<span class="token punctuation">.</span>memory_allocated<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">1024</span><span class="token operator">**</span><span class="token number">2</span><span class="token punctuation">:</span><span class="token format-spec">.2f</span><span class="token punctuation">&#125;</span></span><span class="token string"> MB"</span></span><span class="token punctuation">)</span>
+  <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"  Reserved:  </span><span class="token interpolation"><span class="token punctuation">&#123;</span>torch<span class="token punctuation">.</span>cuda<span class="token punctuation">.</span>memory_reserved<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">1024</span><span class="token operator">**</span><span class="token number">2</span><span class="token punctuation">:</span><span class="token format-spec">.2f</span><span class="token punctuation">&#125;</span></span><span class="token string"> MB"</span></span><span class="token punctuation">)</span>
+    
+  loss<span class="token punctuation">,</span> train_batches <span class="token operator">=</span> train_epoch<span class="token punctuation">(</span>model<span class="token punctuation">,</span> dataloader_train<span class="token punctuation">,</span> args<span class="token punctuation">)</span>
+    
+  <span class="token comment"># [2] 显存状态：训练结束后</span>
+  <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"[Rank </span><span class="token interpolation"><span class="token punctuation">&#123;</span>rank<span class="token punctuation">&#125;</span></span><span class="token string"> | Epoch </span><span class="token interpolation"><span class="token punctuation">&#123;</span>epoch<span class="token punctuation">&#125;</span></span><span class="token string">] After training:"</span></span><span class="token punctuation">)</span>
+  <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"  Allocated: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>torch<span class="token punctuation">.</span>cuda<span class="token punctuation">.</span>memory_allocated<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">1024</span><span class="token operator">**</span><span class="token number">2</span><span class="token punctuation">:</span><span class="token format-spec">.2f</span><span class="token punctuation">&#125;</span></span><span class="token string"> MB"</span></span><span class="token punctuation">)</span>
+  <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"  Reserved:  </span><span class="token interpolation"><span class="token punctuation">&#123;</span>torch<span class="token punctuation">.</span>cuda<span class="token punctuation">.</span>memory_reserved<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">1024</span><span class="token operator">**</span><span class="token number">2</span><span class="token punctuation">:</span><span class="token format-spec">.2f</span><span class="token punctuation">&#125;</span></span><span class="token string"> MB"</span></span><span class="token punctuation">)</span></code></pre>
+</li>
+<li><p>清除GPU缓存，可以在每轮训练、评估后加<code>torch.cuda.empty_cache()</code>，不会释放内存给系统，但能帮助 PyTorch 重用空闲显存块</p>
+<pre class="language-python" data-language="python"><code class="language-python">train_epoch<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment"># 清空显存碎片</span>
+torch<span class="token punctuation">.</span>cuda<span class="token punctuation">.</span>empty_cache<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">if</span> dist<span class="token punctuation">.</span>is_initialized<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    dist<span class="token punctuation">.</span>barrier<span class="token punctuation">(</span><span class="token punctuation">)</span>
+eval_epoch<span class="token punctuation">(</span><span class="token punctuation">)</span>
+torch<span class="token punctuation">.</span>cuda<span class="token punctuation">.</span>empty_cache<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre></li>
+</ul>
+</li>
+</ul>
 <h3 id="执行命令"><a href="#执行命令" class="headerlink" title="执行命令"></a>执行命令</h3><p>nproc_per_node：进程数目</p>
 <pre class="language-bash" data-language="bash"><code class="language-bash">python <span class="token parameter variable">-m</span> torch.distributed.launch <span class="token parameter variable">--nproc_per_node</span><span class="token operator">=</span>n_gpus train.py</code></pre>
 
 <p><strong>注意：</strong></p>
 <ul>
 <li>train.py中要有接受local_rank的参数选项，launch会传入这个参数</li>
-<li>每个进程的batch_size是一个GPU所需要的batch_size大小</li>
+<li>每个进程的batch_size是一个GPU所需要的batch_size大小。一般情况，batch_size和单卡一样，所占显存通常更高，多卡时较单卡batch_size一般需要适当缩小</li>
 </ul>
 <h5 id="也可以使用下述命令"><a href="#也可以使用下述命令" class="headerlink" title="也可以使用下述命令"></a>也可以使用下述命令</h5><pre class="language-bash" data-language="bash"><code class="language-bash">torchrun <span class="token parameter variable">--nproc_per_node</span><span class="token operator">=</span><span class="token number">4</span> train.py</code></pre>
 
@@ -530,18 +577,17 @@ world_size <span class="token operator">=</span> <span class="token builtin">int
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2025/07/11/DataParallel/">
+                <a href="/2025/07/23/linux-command/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="使用DistributedDataParallel单机多卡训练">
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="常用linux命令记录">
                         
-                        <span class="card-title">使用DistributedDataParallel单机多卡训练</span>
+                        <span class="card-title">常用linux命令记录</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -551,29 +597,20 @@ world_size <span class="token operator">=</span> <span class="token builtin">int
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-07-11
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2025-07-23
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/python/" class="post-category">
-                                    python
+                            <a href="/categories/%E5%85%B6%E4%BB%96/" class="post-category">
+                                    其他
                                 </a>
                             
                             
                         </span>
                     </div>
-                </div>
-
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/%E5%B9%B6%E8%A1%8C%E8%AE%AD%E7%BB%83/">
-                        <span class="chip bg-color">并行训练</span>
-                    </a>
-                    
                 </div>
                 
             </div>
